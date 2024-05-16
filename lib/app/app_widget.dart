@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 import 'commons/theme.dart';
-import 'pages/login.dart';
 
 class AppWidget extends StatelessWidget {
   const AppWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    Modular.setInitialRoute('/');
+    return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       title: ':upd8 teste',
       theme: customLightTheme(),
-      home: const LoginPage(),
+      routerConfig: Modular.routerConfig,
     );
   }
 }

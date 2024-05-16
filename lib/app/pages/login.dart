@@ -1,9 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:upd8_teste/app/pages/forgot_password.dart';
-import 'package:upd8_teste/app/pages/home.dart';
-import 'package:upd8_teste/app/pages/register.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -93,9 +91,7 @@ class _LoginPageState extends State<LoginPage> {
                     padding: const EdgeInsets.symmetric(vertical: 20.0),
                     child: ElevatedButton(
                         onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (BuildContext context) => const HomePage(),
-                          ));
+                          Modular.to.pushNamed("/home");
                         },
                         child: const Text('ENTRAR')),
                   ),
@@ -104,12 +100,7 @@ class _LoginPageState extends State<LoginPage> {
                     child: Text.rich(TextSpan(children: [
                       TextSpan(
                         text: 'Esqueceu a senha?',
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () =>
-                              Navigator.of(context).push(MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    const ForgotPasswordPage(),
-                              )),
+                        recognizer: TapGestureRecognizer()..onTap = null,
                         style: TextStyle(
                           decoration: TextDecoration.underline,
                           color: Theme.of(context).colorScheme.secondary,
@@ -127,10 +118,7 @@ class _LoginPageState extends State<LoginPage> {
                         text: 'clique aqui',
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  const RegisterPage(),
-                            ));
+                            Modular.to.pushNamed("/register");
                           },
                         style: TextStyle(
                           decoration: TextDecoration.underline,

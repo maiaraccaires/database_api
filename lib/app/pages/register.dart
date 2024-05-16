@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:upd8_teste/app/pages/login.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -143,7 +143,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           padding: const EdgeInsets.symmetric(horizontal: 5.0),
                           child: OutlinedButton(
                               onPressed: () {
-                                Navigator.of(context).pop();
+                                Modular.to.pop();
                               },
                               child: const Text('Cancelar')),
                         ),
@@ -160,11 +160,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         text: 'Entrar',
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
-                            Navigator.of(context)
-                                .pushReplacement(MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  const LoginPage(),
-                            ));
+                            Modular.to.pushNamed("/");
                           },
                         style: TextStyle(
                           decoration: TextDecoration.underline,
