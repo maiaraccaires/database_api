@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:upd8_teste/app/pages/finance.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:upd8_teste/app/pages/utils/enterprises.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -45,9 +46,11 @@ class _HomePageState extends State<HomePage> {
       endDrawer: Drawer(
         child: ListView(
           children: [
-            const ListTile(
-              title: Text('MEU PERFIL'),
-              onTap: null,
+            ListTile(
+              title: const Text('MEU PERFIL'),
+              onTap: () {
+                Modular.to.pushNamed("/profile");
+              },
             ),
             Divider(
               color: Colors.grey.withOpacity(0.5),
@@ -61,16 +64,7 @@ class _HomePageState extends State<HomePage> {
               color: Colors.grey.withOpacity(0.5),
               height: 1,
             ),
-            ListTile(
-              title: const Text('FINANCEIRO'),
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (BuildContext context) => const FinancePage(),
-                  ),
-                );
-              },
-            ),
+            const ListTile(title: Text('FINANCEIRO'), onTap: null),
             Divider(
               color: Colors.grey.withOpacity(0.5),
               height: 1,
@@ -114,22 +108,59 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      body: Column(
-        children: [
-          Container(
-            height: 3,
-            color: Theme.of(context).colorScheme.secondary,
-          ),
-          const Center(
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 50,
-                ),
-              ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              height: 3,
+              color: Theme.of(context).colorScheme.secondary,
             ),
-          ),
-        ],
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    ListView.builder(
+                        primary: false,
+                        shrinkWrap: true,
+                        scrollDirection: Axis.vertical,
+                        itemCount: Enterprises().infos.length,
+                        itemBuilder: (context, index) {
+                          var enterprise = Enterprises().infos[index];
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10.0),
+                            child: Column(
+                              children: [
+                                Text(
+                                  enterprise['name']!,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .labelLarge!
+                                      .copyWith(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                          color:
+                                              Theme.of(context).primaryColor),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 10.0),
+                                  child: Image.asset(
+                                    enterprise['image']!,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                Text(enterprise['description']!),
+                              ],
+                            ),
+                          );
+                        }),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
