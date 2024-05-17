@@ -105,7 +105,7 @@ ThemeData customLightTheme() {
     ),
     checkboxTheme: CheckboxThemeData(
       checkColor: MaterialStateProperty.all(Colors.white),
-      fillColor: MaterialStateProperty.all(Color(0xFF182842)),
+      fillColor: MaterialStateProperty.all(const Color(0xFF182842)),
     ),
     inputDecorationTheme: InputDecorationTheme(
       border: OutlineInputBorder(

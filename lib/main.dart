@@ -4,7 +4,9 @@ import 'package:upd8_teste/app/app_widget.dart';
 
 import 'app/app_module.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   return runApp(
     ModularApp(
       module: AppModule(),

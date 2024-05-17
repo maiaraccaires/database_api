@@ -1,7 +1,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:upd8_teste/app/blocs/database/users_db_event.dart';
+import 'package:upd8_teste/app/models/user_model.dart';
+
+import '../blocs/database/users_db_bloc.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -11,10 +14,26 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  final _userDBBloc = Modular.get<UserDBBloc>();
+
   final nameController = TextEditingController();
   final documentController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    nameController.dispose();
+    documentController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,10 +77,8 @@ class _RegisterPageState extends State<RegisterPage> {
             ),
             Center(
               child: Padding(
-                padding: const EdgeInsets.only(bottom: 20.0),
-                child: SvgPicture.asset('assets/svg/logo-lavvi.svg',
-                    width: 200, semanticsLabel: 'Logo Lavvi'),
-              ),
+                  padding: const EdgeInsets.only(bottom: 20.0),
+                  child: Image.asset('assets/images/logo.png', width: 200)),
             ),
             Container(
               constraints: const BoxConstraints(maxWidth: 500),
@@ -136,14 +153,25 @@ class _RegisterPageState extends State<RegisterPage> {
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 5.0),
                           child: ElevatedButton(
-                              onPressed: () {}, child: const Text('Cadastrar')),
+                              onPressed: () async {
+                                var user = UserModel(
+                                    fullname: nameController.text,
+                                    email: emailController.text,
+                                    password: passwordController.text,
+                                    username: '1',
+                                    phone: '',
+                                    document: documentController.text);
+
+                                _userDBBloc.add(InsertUserEvent(user));
+                              },
+                              child: const Text('Cadastrar')),
                         ),
                         const Text('ou'),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 5.0),
                           child: OutlinedButton(
                               onPressed: () {
-                                Modular.to.pop();
+                                Modular.to.popUntil(ModalRoute.withName('/'));
                               },
                               child: const Text('Cancelar')),
                         ),
@@ -160,7 +188,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         text: 'Entrar',
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
-                            Modular.to.pushNamed("/");
+                            Modular.to.popUntil(ModalRoute.withName('/'));
                           },
                         style: TextStyle(
                           decoration: TextDecoration.underline,

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:upd8_teste/app/blocs/users_bloc.dart';
-import 'package:upd8_teste/app/blocs/users_event.dart';
-import 'package:upd8_teste/app/blocs/users_state.dart';
+import 'package:upd8_teste/app/blocs/users/users_bloc.dart';
+import 'package:upd8_teste/app/blocs/users/users_event.dart';
+import 'package:upd8_teste/app/blocs/users/users_state.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});

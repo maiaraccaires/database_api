@@ -1,7 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:flutter_svg/svg.dart';
+
+import '../blocs/database/users_db_bloc.dart';
+import '../blocs/database/users_db_event.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -11,8 +13,22 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final _userDBBloc = Modular.get<UserDBBloc>();
+
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    usernameController.dispose();
+    passwordController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,8 +73,7 @@ class _LoginPageState extends State<LoginPage> {
             Center(
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 20.0),
-                child: SvgPicture.asset('assets/svg/logo-lavvi.svg',
-                    width: 200, semanticsLabel: 'Logo Lavvi'),
+                child: Image.asset('assets/images/logo.png', width: 200),
               ),
             ),
             Container(
@@ -90,8 +105,10 @@ class _LoginPageState extends State<LoginPage> {
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 20.0),
                     child: ElevatedButton(
-                        onPressed: () {
-                          Modular.to.pushNamed("/home");
+                        onPressed: () async {
+                          _userDBBloc.add(LoginUserEvent(
+                              usernameController.text,
+                              passwordController.text));
                         },
                         child: const Text('ENTRAR')),
                   ),
