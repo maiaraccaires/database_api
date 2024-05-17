@@ -3,7 +3,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 
 import 'commons/theme.dart';
-import 'services/sqflite/database.dart';
+import 'services/database/user_database.dart';
 
 class AppWidget extends StatelessWidget {
   const AppWidget({super.key});

@@ -1,6 +1,9 @@
+import 'dart:core';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:upd8_teste/app/blocs/database/users_db_event.dart';
 import 'package:upd8_teste/app/models/user_model.dart';
 
@@ -20,6 +23,9 @@ class _RegisterPageState extends State<RegisterPage> {
   final documentController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+
+  final _formKey = GlobalKey<FormState>();
+  bool _isChecked = false;
 
   @override
   void initState() {
@@ -87,56 +93,103 @@ class _RegisterPageState extends State<RegisterPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text('Cadastro'),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5.0),
-                    child: TextFormField(
-                      controller: nameController,
-                      decoration: const InputDecoration(
-                        hintText: 'Nome completo',
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5.0),
-                    child: TextFormField(
-                      controller: documentController,
-                      decoration: const InputDecoration(
-                        hintText: 'CPF',
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5.0),
-                    child: TextFormField(
-                      controller: emailController,
-                      decoration: const InputDecoration(
-                        hintText: 'E-mail',
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5.0),
-                    child: TextFormField(
-                      controller: passwordController,
-                      decoration: const InputDecoration(
-                        hintText: 'Senha',
-                      ),
+                  Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 5.0),
+                          child: TextFormField(
+                            controller: nameController,
+                            decoration: const InputDecoration(
+                              hintText: 'Nome completo',
+                            ),
+                            keyboardType: TextInputType.name,
+                            validator: (value) {
+                              if (value == null ||
+                                  value.isEmpty ||
+                                  value.length < 5) {
+                                return 'Por favor, informe seu nome completo.';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 5.0),
+                          child: TextFormField(
+                            controller: documentController,
+                            decoration: const InputDecoration(
+                              hintText: 'CPF',
+                            ),
+                            keyboardType: TextInputType.number,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Por favor, informe seu CPF';
+                              } else if (value.length < 11 &&
+                                  !value.contains(RegExp(r'^([0-9])'))) {
+                                return 'Por favor, informe um CPF válido';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 5.0),
+                          child: TextFormField(
+                            controller: emailController,
+                            decoration: const InputDecoration(
+                              hintText: 'E-mail',
+                            ),
+                            keyboardType: TextInputType.emailAddress,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Por favor, informe seu e-mail';
+                              } else if (value.length < 5 &&
+                                  !value.contains('@')) {
+                                return 'Por favor, informe um e-mail válido.';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 5.0),
+                          child: TextFormField(
+                            controller: passwordController,
+                            obscureText: true,
+                            decoration: const InputDecoration(
+                              hintText: 'Senha',
+                            ),
+                            keyboardType: TextInputType.visiblePassword,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Por favor, informe uma senha';
+                              } else if (value.length < 5) {
+                                return 'Por favor, informe uma senha mais forte';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   const Text(
-                      'Para sua segurança use no mínimo caracteres letras e números'),
+                      'Para sua segurança use no mínimo letras e números'),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 15.0),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Checkbox(
-                            value: true,
-                            onChanged: (val) {
-                              setState(() {
-                                val;
-                              });
-                            }),
+                          value: _isChecked,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              _isChecked = value ?? false;
+                            });
+                          },
+                        ),
                         const Flexible(
                           child: Text(
                               'Ao concluir seu cadastro, você concorda com nossos Termos & Política de privacidade.'),
@@ -154,15 +207,23 @@ class _RegisterPageState extends State<RegisterPage> {
                           padding: const EdgeInsets.symmetric(horizontal: 5.0),
                           child: ElevatedButton(
                               onPressed: () async {
-                                var user = UserModel(
-                                    fullname: nameController.text,
-                                    email: emailController.text,
-                                    password: passwordController.text,
-                                    username: '1',
-                                    phone: '',
-                                    document: documentController.text);
+                                if (_formKey.currentState!.validate()) {
+                                  var user = UserModel(
+                                      fullname: nameController.text,
+                                      email: emailController.text,
+                                      password: passwordController.text,
+                                      document: documentController.text,
+                                      terms: _isChecked.toString());
 
-                                _userDBBloc.add(InsertUserEvent(user));
+                                  if (_isChecked) {
+                                    _userDBBloc.add(InsertUserEvent(user));
+                                  } else {
+                                    SmartDialog.showToast(
+                                        'É necessário concordar com os Termos & Política de privacidade para prosseguir.',
+                                        displayTime:
+                                            const Duration(seconds: 3));
+                                  }
+                                }
                               },
                               child: const Text('Cadastrar')),
                         ),

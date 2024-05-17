@@ -126,7 +126,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                               .secondary,
                                         ),
                                         const SizedBox(width: 5),
-                                        Text(state.data[0].phone),
+                                        Text(state.data[0].phone!),
                                       ],
                                     ),
                                     Row(

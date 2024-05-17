@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
-import '../../services/sqflite/database.dart';
+import '../../services/database/user_database.dart';
 
 import 'users_db.state.dart';
 import 'users_db_event.dart';

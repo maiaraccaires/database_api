@@ -5,10 +5,10 @@ import 'package:upd8_teste/app/pages/home.dart';
 import 'package:upd8_teste/app/pages/login.dart';
 import 'package:upd8_teste/app/pages/profile.dart';
 import 'package:upd8_teste/app/pages/register.dart';
-import 'package:upd8_teste/app/services/sqflite/database.dart';
+import 'package:upd8_teste/app/services/database/user_database.dart';
 
 import 'blocs/database/users_db_bloc.dart';
-import 'services/api_service.dart';
+import 'services/api/api_service.dart';
 
 class AppModule extends Module {
   @override

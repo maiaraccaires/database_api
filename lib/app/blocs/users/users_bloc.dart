@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:upd8_teste/app/blocs/users/users_event.dart';
 import 'package:upd8_teste/app/blocs/users/users_state.dart';
 
-import '../../services/api_service.dart';
+import '../../services/api/api_service.dart';
 
 class UsersBloc extends Bloc<UsersEvent, UsersState> {
   final APIService service;

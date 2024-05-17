@@ -5,21 +5,23 @@ class UserModel {
   final String fullname;
   final String email;
   final String password;
-  final String username;
-  final String phone;
   final String document;
+  final String? username;
+  final String? phone;
   final Address? address;
   final String? website;
   final Company? company;
+  final String terms;
 
   UserModel({
     this.id,
     required this.fullname,
     required this.email,
     required this.password,
-    required this.username,
-    required this.phone,
     required this.document,
+    required this.terms,
+    this.username,
+    this.phone,
     this.address,
     this.website,
     this.company,
@@ -27,7 +29,7 @@ class UserModel {
 
   @override
   String toString() {
-    return 'UserModel(id: $id, fullname: $fullname, email: $email, password: $password, username: $username, phone: $phone, document: $document, address: $address, website: $website, company: $company)';
+    return 'UserModel(id: $id, fullname: $fullname, email: $email, password: $password, phone: $phone, document: $document, address: $address, website: $website, company: $company)';
   }
 
   Map<String, dynamic> toMap() {
@@ -36,7 +38,6 @@ class UserModel {
       'fullname': fullname,
       'email': email,
       'password': password,
-      'username': username,
       'phone': phone,
       'document': document,
       'address': address?.toMap(),
@@ -47,7 +48,7 @@ class UserModel {
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
-      id: map['id']?.toInt(),
+      id: map['id']?.toInt() ?? 0,
       fullname: map['name'] ?? '',
       email: map['email'] ?? '',
       password: map['token'] ?? '',
@@ -57,6 +58,7 @@ class UserModel {
       address: map['address'] != null ? Address.fromMap(map['address']) : null,
       website: map['website'],
       company: map['company'] != null ? Company.fromMap(map['company']) : null,
+      terms: map['termApproved'] ?? '',
     );
   }
 

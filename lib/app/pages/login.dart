@@ -18,6 +18,8 @@ class _LoginPageState extends State<LoginPage> {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
 
+  final _formKey = GlobalKey<FormState>();
+
   @override
   void initState() {
     super.initState();
@@ -84,31 +86,56 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   const Text('Bem Vindo'),
                   const SizedBox(height: 50),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5.0),
-                    child: TextFormField(
-                      controller: usernameController,
-                      decoration: const InputDecoration(
-                        hintText: 'Nome de usuário ou e-mail',
+                  Form(
+                    key: _formKey,
+                    child: Column(children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 5.0),
+                        child: TextFormField(
+                          controller: usernameController,
+                          decoration: const InputDecoration(
+                            hintText: 'E-mail',
+                          ),
+                          keyboardType: TextInputType.emailAddress,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Por favor, informe seu e-mail';
+                            } else if (value.length < 5 &&
+                                !value.contains('@')) {
+                              return 'Por favor, informe um e-mail válido.';
+                            }
+                            return null;
+                          },
+                        ),
                       ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5.0),
-                    child: TextFormField(
-                      controller: passwordController,
-                      decoration: const InputDecoration(
-                        hintText: 'Senha',
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 5.0),
+                        child: TextFormField(
+                          controller: passwordController,
+                          obscureText: true,
+                          decoration: const InputDecoration(
+                            hintText: 'Senha',
+                          ),
+                          keyboardType: TextInputType.visiblePassword,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Por favor, informe sua senha';
+                            }
+                            return null;
+                          },
+                        ),
                       ),
-                    ),
+                    ]),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 20.0),
                     child: ElevatedButton(
                         onPressed: () async {
-                          _userDBBloc.add(LoginUserEvent(
-                              usernameController.text,
-                              passwordController.text));
+                          if (_formKey.currentState!.validate()) {
+                            _userDBBloc.add(LoginUserEvent(
+                                usernameController.text,
+                                passwordController.text));
+                          }
                         },
                         child: const Text('ENTRAR')),
                   ),

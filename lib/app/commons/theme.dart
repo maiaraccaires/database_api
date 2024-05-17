@@ -104,8 +104,8 @@ ThemeData customLightTheme() {
               _customLightThemesTextTheme(lightTheme.textTheme).labelLarge),
     ),
     checkboxTheme: CheckboxThemeData(
-      checkColor: MaterialStateProperty.all(Colors.white),
-      fillColor: MaterialStateProperty.all(const Color(0xFF182842)),
+      checkColor: MaterialStateProperty.all(const Color(0xFF182842)),
+      fillColor: MaterialStateProperty.all(Colors.white),
     ),
     inputDecorationTheme: InputDecorationTheme(
       border: OutlineInputBorder(
