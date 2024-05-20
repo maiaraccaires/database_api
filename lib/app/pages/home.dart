@@ -25,7 +25,7 @@ class _HomePageState extends State<HomePage> {
           color: Color(0xFF4879C7),
         ),
         title: const Text(
-          'Olá, Maiara',
+          'Olá, ',
           style: TextStyle(color: Color(0xFF4879C7)),
         ),
         actions: [
